@@ -1,0 +1,92 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# msissf
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of `msissf` is to fit Markov-Switching integrated Step-Selection Functions.
+
+## Installation
+
+You can install the development version of `msissf` from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("jmsigner/msissf")
+```
+
+## Example
+
+```{r example}
+library(amt)
+library(msissf)
+set.seed(123)
+
+# Load example data set
+data(deer) 
+forest <- get_sh_forest()
+```
+
+
+Next, prepare the data set using `amt`. 
+
+```{r example1}
+rs <- deer |> 
+  filter_min_n_burst(min_n = 4) |> 
+  steps_by_burst() |> 
+  random_steps() |> extract_covariates(forest)
+```
+
+Specify the msiSSF: 
+
+```{r example2, warning=FALSE}
+N <- 2
+f <- list(
+  habitat.selection = case_ ~ forest + strata(step_id_),
+  step.length = ~ I(sl_ * -1) + log(sl_), 
+  turn.angle = ~ cos(ta_)
+)
+res1 <- fit_msissf(
+  formula = f,
+  data = rs,
+  start.values = generate_starting_values(f, N = N, rs),
+  N = N,
+  burst_ = "burst_", decode.states = TRUE, print.level = 0
+)
+```
+
+And inspect results
+
+```{r example3}
+res1$beta
+res1$CI
+
+res1$shape
+res1$rate
+head(res1$decoded.states, 20)
+
+library(tidyverse)
+x <- 1:2400
+bind_rows(
+  tibble(x = x, 
+         y = dgamma(x, rate = res1$rate[1], shape = res1$shape[1]), state = "1"), 
+  tibble(x = x, 
+         y = dgamma(x, rate = res1$rate[2], shape = res1$shape[2]), state = "2")
+) |> 
+  ggplot(aes(x, y, col = state)) + geom_line() + theme_light()
+```
+

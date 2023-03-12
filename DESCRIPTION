@@ -1,0 +1,30 @@
+Package: msissf
+Type: Package
+Title: Fit Markov-Switching integrated Step-Selection Functions
+Version: 0.1.0
+Authors@R: c(
+    person("Jennifer", "Pohle", email = "jennifer.pohle@uni-potsdam.de", role = "aut"),
+    person("Johannes", "Signer", email = "jsigner@uni-goettingen.de", role = "cre"))
+URL: https://github.com/jmsigner/msissf
+BugReports: https://github.com/jmsigner/msissf/issues
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: GPL-3 + file LICENSE 
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    amt,
+    checkmate,
+    dplyr,
+    MASS,
+    methods,
+    numDeriv,
+    purrr,
+    stats,
+    tidyr
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
