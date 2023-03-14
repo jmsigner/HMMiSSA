@@ -38,8 +38,8 @@ fit_msissf <- function(
 
   # vector of covariate names in formula
   covs <- c(formula$habitat.selection[[3]],
-    formula$step.length[[2]],
-    formula$turn.angle[[2]])
+            formula$turn.angle[[2]],
+            formula$step.length[[2]])
 
   covs <- covs |> lapply(\(x) x |> deparse() |> strsplit("\\+")) |> unlist()
   covs <- covs[!grepl("strata\\(.*\\)", covs)]
@@ -107,7 +107,7 @@ fit_msissf <- function(
   # Compute the Hessian
   if (conf.int) {
 
-    hes <- numDeriv::hessian(nlogLike, par.vect, X.list = X.list, N = N, p = p,
+    hes <- numDeriv::hessian(nlogLike, mod$estimate, X.list = X.list, N = N, p = p,
                              sld = sld, tad = tad,
                              stationary=stationary)
 
