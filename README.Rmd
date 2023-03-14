@@ -57,7 +57,7 @@ Specify the msiSSF:
 N <- 2
 f <- list(
   habitat.selection = case_ ~ forest + strata(step_id_),
-  step.length = ~ I(sl_ * -1) + log(sl_), 
+  step.length = ~ log(sl_) + I(sl_ * -1), 
   turn.angle = ~ cos(ta_)
 )
 res1 <- fit_msissf(
