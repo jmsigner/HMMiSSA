@@ -31,6 +31,43 @@ fit_msissf <- function(
   print.level = 2, stepmax=NULL, conf.int = TRUE, alpha = 0.05) {
 
 
+  if (FALSE) {
+
+    library(amt)
+    library(msissf)
+    devtools::load_all()
+    set.seed(123)
+
+    # Load example data set
+    data(deer)
+    forest <- get_sh_forest()
+
+    rs <- deer |>
+      filter_min_n_burst(min_n = 4) |>
+      steps_by_burst() |>
+      random_steps() |> extract_covariates(forest)
+
+    N <- 2
+    f <- list(
+      habitat.selection = case_ ~ forest + strata(step_id_),
+      step.length = ~ log(sl_) + I(sl_ * -1),
+      turn.angle = ~ cos(ta_)
+    )
+    formula = f
+    data = rs
+    start.values = generate_starting_values(f, N = N, rs)
+    burst_ = "burst_"
+    decode.states = TRUE
+    stationary = TRUE
+    iterlim = 1000
+    gradtol = 1e-06
+    decode.states = TRUE
+    print.level = 2
+    stepmax=NULL
+    conf.int = TRUE
+    alpha = 0.05
+  }
+
   # 1) step IDs and covariates
   # place of stepID in formula
   stepID <- all.vars(formula$habitat.selection)[
@@ -51,9 +88,6 @@ fit_msissf <- function(
 
   # name of used column
   used <- all.vars(formula$habitat.selection[[2]])
-
-  # Make sure we have only complete observations
-  data <- data[stats::complete.cases(data), ]
 
   # model matrix
   f <- stats::as.formula(paste("~ -1 +", paste0(covs, collapse = "+")))
@@ -109,7 +143,7 @@ fit_msissf <- function(
 
     hes <- numDeriv::hessian(nlogLike, mod$estimate, X.list = X.list, N = N, p = p,
                              sld = sld, tad = tad,
-                             stationary=stationary)
+                             stationary = stationary)
 
     # standard errors for beta_clr
     std.err <- try(sqrt(diag(MASS::ginv(hes))[c(1:(N*p))]))
@@ -126,7 +160,7 @@ fit_msissf <- function(
       CI = list(CI_up = CI_up, CI_low = CI_low, p.value = p_beta)
 
     } else {
-      se_beta<-CI_up<-CI_low<-p_beta<-matrix(NA,p_beta,N)
+      se_beta <- CI_up <- CI_low <- p_beta <- matrix(NA, p - 3, N)
       CI = list()
     }
     mod$hessian <- hes

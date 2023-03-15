@@ -28,8 +28,8 @@ library(amt)
 #> The following object is masked from 'package:stats':
 #> 
 #>     filter
-library(msissf)
-set.seed(123)
+library(msissa)
+set.seed(12)
 
 # Load example data set
 data(deer) 
@@ -51,7 +51,7 @@ Specify the msiSSF:
 N <- 2
 f <- list(
   habitat.selection = case_ ~ forest + strata(step_id_),
-  step.length = ~ I(sl_ * -1) + log(sl_), 
+  step.length = ~ log(sl_) + I(sl_ * -1), 
   turn.angle = ~ cos(ta_)
 )
 res1 <- fit_msissf(
@@ -67,23 +67,23 @@ And inspect results
 
 ``` r
 res1$beta
-#> [1] 0.5520501 1.4571744
+#> [1]  0.7558604 -1.1124448
 res1$CI
 #> $CI_up
-#> [1] 2.143323 1.904994
+#> [1]  1.04050965 -0.02096608
 #> 
 #> $CI_low
-#> [1] -1.039223  1.009354
+#> [1]  0.4712112 -2.2039235
 #> 
 #> $p.value
-#> [1] 4.965313e-01 1.799034e-10
+#> [1] 1.945117e-07 4.575867e-02
 
 res1$shape
-#> [1] 0.791280 1.004012
+#> [1] 0.9373839 1.5848606
 res1$rate
-#> [1] 0.0002112867 0.0025676928
+#> [1] 0.001942317 0.020893428
 head(res1$decoded.states, 20)
-#>  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+#>  [1] 2 2 1 1 1 1 1 1 1 1 2 1 1 2 2 2 2 2 2 2
 
 library(tidyverse)
 #> ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
