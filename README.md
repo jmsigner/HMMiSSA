@@ -6,7 +6,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `msissf` is to fit Markov-Switching integrated
+The goal of `msissa` is to fit Markov-Switching integrated
 Step-Selection Functions.
 
 ## Installation
