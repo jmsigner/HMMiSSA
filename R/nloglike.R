@@ -34,19 +34,25 @@ nlogLike <- function(parvect, X.list, N, p, sld,
       stop(paste0("Burst, ", run_ID, " has < 2 steps"))
     }
 
-    foo = lpn$delta * tdat$allprobs[[1]] # t=1
-    sumfoo = sum(foo)
-    lscale = log(sumfoo) # current loglikelihood-value
-    foo = foo / sumfoo
-    for(ts in 2:nrow(tdat)) { # loop across all time-steps
-      foo = foo %*% lpn$gamma * tdat$allprobs[[ts]]
-      sumfoo = sum(foo)
-      lscale = lscale + log(sumfoo) # updated loglikelihood-value at t=ts
-      foo = foo / sumfoo
-    }
-    # could be replaced by forward algorithm in C++:
+    # This is now implemented in cpp
+    
+    # foo = lpn$delta * tdat$allprobs[[1]] # t=1
+    # sumfoo = sum(foo)
+    # lscale = log(sumfoo) # current loglikelihood-value
+    # foo = foo / sumfoo
+    # for(ts in 2:nrow(tdat)) { # loop across all time-steps
+    #   foo = foo %*% lpn$gamma * tdat$allprobs[[ts]]
+    #   sumfoo = sum(foo)
+    #   lscale = lscale + log(sumfoo) # updated loglikelihood-value at t=ts
+    #   foo = foo / sumfoo
+    # }
     # lscale<-nll_Rcpp(allprobs, lpn$gamma, lpn$delta, nSteps[run_ID])
-    lscale_all <- lscale_all + lscale # sum log-likelihood values of all bursts
+    # lscale_all <- lscale_all + lscale # sum log-likelihood values of all bursts
+    
+    allprobs = do.call(rbind,tdat$allprobs) # allprobs muss eine Matrix sein (keine Liste wie bisher)! Dies könnte auch direct im Xlist- oder tdat-Objekt geändert werden  
+    lscale <- ll_Rcpp(allprobs, lpn$gamma, lpn$delta, nrow(allprobs))
+    lscale_all <- lscale_all + lscale # sum log-likelihood values of all bursts    
+
   }
   # return negative log-likelihood value (as nlm minimises functions)
   return(-lscale_all)

@@ -13,12 +13,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-# msissf
+# HMMiSSA
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `msissf` is to fit Markov-Switching integrated Step-Selection Functions.
+The goal of the **HMMiSSA** package is to fit Markov-Switching integrated Step-Selection Functions.
 
 ## Installation
 
@@ -33,7 +33,7 @@ devtools::install_github("jmsigner/msissf")
 
 ```{r example}
 library(amt)
-library(msissa)
+library(HMMiSSA)
 set.seed(12)
 
 # Load example data set

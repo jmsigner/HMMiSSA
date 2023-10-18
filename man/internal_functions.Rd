@@ -2,11 +2,11 @@
 % Please edit documentation in R/nloglike.R
 \name{internal_functions}
 \alias{internal_functions}
-\alias{logLike}
+\alias{nlogLike}
 \alias{w2n}
 \title{Internal function to compute the negative log likelihood}
 \usage{
-logLike(parvect, X.list, N, p, sld, tad, stationary)
+nlogLike(parvect, X.list, N, p, sld, tad, stationary)
 
 w2n(parvect, N, p, sld, tad, stationary = FALSE)
 }
