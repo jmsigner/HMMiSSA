@@ -16,7 +16,7 @@ You can install the development version of `msissf` from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("jmsigner/msissf")
+devtools::install_github("jmsigner/HMMiSSA")
 ```
 
 ## Example
@@ -67,29 +67,29 @@ And inspect results
 
 ``` r
 res1$beta
-#> [1] -1.1124192  0.7558407
+#> [1] -1.1124240  0.7558408
 res1$CI
 #> $CI_up
-#> [1] -0.02095268  1.04049013
+#> [1] -0.02095351  1.04049011
 #> 
 #> $CI_low
-#> [1] -2.2038857  0.4711914
+#> [1] -2.2038946  0.4711915
 #> 
 #> $p.value
-#> [1] 4.576123e-02 1.946560e-07
+#> [1] 4.576108e-02 1.946545e-07
 
 res1$shape
-#> [1] 1.5848699 0.9373798
+#> [1] 1.5848713 0.9373796
 res1$rate
-#> [1] 0.020893379 0.001942308
+#> [1] 0.020893399 0.001942308
 head(res1$decoded.states, 20)
 #>  [1] 1 1 2 2 2 2 2 2 2 2 1 2 2 1 1 1 1 1 1 1
 
 library(tidyverse)
 #> ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-#> ✔ dplyr     1.1.3     ✔ readr     2.1.4
-#> ✔ forcats   1.0.0     ✔ stringr   1.5.0
-#> ✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+#> ✔ dplyr     1.1.4     ✔ readr     2.1.5
+#> ✔ forcats   1.0.0     ✔ stringr   1.5.1
+#> ✔ ggplot2   3.4.4     ✔ tibble    3.2.1
 #> ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
 #> ✔ purrr     1.0.2     
 #> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
